@@ -43,3 +43,6 @@ Output: `packaging/appimage/dist/Teleroboxer-Recomp-x86_64.AppImage`
 The selected ROM path is saved under the user's XDG configuration directory.
 Pass `--rom /path/to/game.vb` to replace it. The ROM is validated by SHA-256
 and is never copied into the AppImage.
+
+The runtime's settings, saves, and optional mod packages are stored in the
+user's XDG data directory, not inside the read-only AppImage mount.
