@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Teleroboxer Recomp
+Comment=Launch Teleroboxer using a user-supplied cartridge dump
+Exec=teleroboxer-recomp
+Icon=teleroboxer-recomp
+Categories=Game;Emulator;
+Terminal=false
+StartupNotify=true
