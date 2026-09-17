@@ -23,6 +23,9 @@ release-stage/
 *.pdb
 *.exp
 *.zip
+*.AppImage
+*.AppImage.zsync
+AppDir/
 
 # CMake / generated build-system files
 CMakeLists.txt
