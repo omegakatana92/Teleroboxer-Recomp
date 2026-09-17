@@ -36,6 +36,9 @@ cmake_install.cmake
 Makefile
 compile_commands.json
 
+# Local build helper workspace
+local-build/
+
 # Runtime / debug / capture artifacts
 captures/
 *.bmp
