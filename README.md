@@ -174,3 +174,17 @@ including a ROM or copyrighted game assets.
 On first launch, the AppImage asks the user to select their own `.vb` dump,
 validates its SHA-256, remembers its path, and starts the native runtime. See
 [`packaging/appimage/README.md`](packaging/appimage/README.md) for instructions.
+
+### Local Linux runtime build
+
+For a Steam Deck or other x86_64 Linux machine, use the local-only helper with
+your own verified cartridge dump:
+
+```bash
+chmod +x tools/build-local-linux.sh
+tools/build-local-linux.sh /absolute/path/to/teleroboxer.vb
+```
+
+It obtains the pinned vbrecomp framework locally, creates ROM-derived output
+only in ignored directories, and builds `build/vbrecomp/runtime/TeleroboxerRecomp`.
+Package that executable with `packaging/appimage/build-appimage.sh`.
