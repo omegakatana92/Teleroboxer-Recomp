@@ -33,5 +33,8 @@ install -m 0644 "$SCRIPT_DIR/teleroboxer-recomp.svg" "$APPDIR/usr/share/icons/hi
 # Collect the runtime's shared-library dependencies before turning the staged
 # AppDir into an AppImage. This is what makes the package portable to SteamOS.
 "$LINUXDEPLOY" --appdir "$APPDIR" --executable "$APPDIR/usr/bin/teleroboxer-recomp"
+# linuxdeploy may generate its own generic AppRun. Restore our launcher after
+# dependency collection so ROM validation and writable XDG data paths survive.
+install -m 0755 "$SCRIPT_DIR/AppRun" "$APPDIR/AppRun"
 ARCH=x86_64 "$APPIMAGETOOL" "$APPDIR" "$APPIMAGE"
 printf 'Created %s\n' "$APPIMAGE"
