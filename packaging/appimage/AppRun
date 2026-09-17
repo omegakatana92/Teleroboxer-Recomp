@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+EXPECTED_SHA256="5bfdc99d6b5bdf32daf3c87e310aa078d6d51c733b02bbbf4042222578b60a36"
+APP_ID="io.github.omegakatana92.teleroboxer-recomp"
+[[ -n "${APPDIR:-}" ]] || APPDIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+RUNTIME="$APPDIR/usr/bin/teleroboxer-recomp"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/$APP_ID"
+ROM_CONFIG="$CONFIG_DIR/rom-path"
+
+show_error() {
+  local message="$1"
+  if command -v zenity >/dev/null 2>&1; then
+    zenity --error --title="Teleroboxer Recomp" --text="$message" 2>/dev/null || true
+  elif command -v kdialog >/dev/null 2>&1; then
+    kdialog --error "$message" --title "Teleroboxer Recomp" 2>/dev/null || true
+  else
+    printf 'Teleroboxer Recomp: %s\n' "$message" >&2
+  fi
+}
+
+select_rom() {
+  if command -v zenity >/dev/null 2>&1; then
+    zenity --file-selection --title="Select your legally obtained Teleroboxer ROM" \
+      --file-filter="Virtual Boy ROM (*.vb) | *.vb" --file-filter="All files | *" 2>/dev/null || true
+  elif command -v kdialog >/dev/null 2>&1; then
+    kdialog --getopenfilename "${HOME:-/}" "*.vb|Virtual Boy ROM (*.vb)" 2>/dev/null || true
+  else
+    show_error "No graphical file picker was found. Install Zenity or KDialog, or launch with --rom /path/to/game.vb."
+    return 1
+  fi
+}
+
+validate_rom() {
+  local rom="$1"
+  [[ -f "$rom" ]] && [[ "$(sha256sum -- "$rom" | awk '{print $1}')" == "$EXPECTED_SHA256" ]]
+}
+
+ROM_PATH=""
+if [[ "${1:-}" == "--rom" ]]; then
+  [[ $# -ge 2 ]] || { show_error "The --rom option requires a file path."; exit 2; }
+  ROM_PATH="$2"
+  shift 2
+elif [[ -f "$ROM_CONFIG" ]]; then
+  IFS= read -r ROM_PATH < "$ROM_CONFIG" || true
+fi
+
+while ! validate_rom "$ROM_PATH"; do
+  [[ -z "$ROM_PATH" ]] || show_error "That file is not the supported Teleroboxer ROM. Please select a dump with SHA-256 $EXPECTED_SHA256."
+  ROM_PATH="$(select_rom)" || exit 1
+  [[ -n "$ROM_PATH" ]] || exit 0
+done
+
+mkdir -p -- "$CONFIG_DIR"
+printf '%s\n' "$ROM_PATH" > "$ROM_CONFIG"
+
+if [[ ! -x "$RUNTIME" ]]; then
+  show_error "The native recomp runtime is missing from this AppImage. Rebuild it with packaging/appimage/build-appimage.sh."
+  exit 1
+fi
+
+# Contract: the vbrecomp-based runtime accepts a cartridge with --rom.
+exec "$RUNTIME" --rom "$ROM_PATH" "$@"
