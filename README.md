@@ -164,3 +164,13 @@ No Teleroboxer ROM, copyrighted game assets, executable release, or ROM-derived 
 
 vbrecomp:
 https://github.com/mstan/vbrecomp
+
+## Steam Deck / AppImage packaging
+
+Steam Deck packaging scripts are available in `packaging/appimage/`. They take
+a separately built x86_64 Linux recomp runtime and produce an AppImage without
+including a ROM or copyrighted game assets.
+
+On first launch, the AppImage asks the user to select their own `.vb` dump,
+validates its SHA-256, remembers its path, and starts the native runtime. See
+[`packaging/appimage/README.md`](packaging/appimage/README.md) for instructions.
