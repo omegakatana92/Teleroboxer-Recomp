@@ -1,0 +1,4 @@
+# Tested recomp-ui revision for this project.
+# Upstream: https://github.com/mstan/recomp-ui
+branch = master
+sha = bca0bcc3949ef6f9bbb6b7b021b1ba50c13db4cb
