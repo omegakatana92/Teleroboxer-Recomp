@@ -7,6 +7,7 @@ APP_ID="io.github.omegakatana92.teleroboxer-recomp"
 RUNTIME="$APPDIR/usr/bin/teleroboxer-recomp"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/$APP_ID"
 ROM_CONFIG="$CONFIG_DIR/rom-path"
+DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/$APP_ID"
 
 show_error() {
   local message="$1"
@@ -52,6 +53,7 @@ while ! validate_rom "$ROM_PATH"; do
 done
 
 mkdir -p -- "$CONFIG_DIR"
+mkdir -p -- "$DATA_DIR/saves" "$DATA_DIR/mods"
 printf '%s\n' "$ROM_PATH" > "$ROM_CONFIG"
 
 if [[ ! -x "$RUNTIME" ]]; then
@@ -59,5 +61,10 @@ if [[ ! -x "$RUNTIME" ]]; then
   exit 1
 fi
 
-# Contract: the vbrecomp-based runtime accepts a cartridge with --rom.
-exec "$RUNTIME" --rom "$ROM_PATH" "$@"
+# An AppImage's mounted files are read-only. Keep vbrecomp settings, saves,
+# and optional mod packages in the user's writable XDG data directory instead.
+exec "$RUNTIME" --rom "$ROM_PATH" \
+  --config "$DATA_DIR/vbrecomp.cfg" \
+  --mods-dir "$DATA_DIR/mods" \
+  --save "$DATA_DIR/saves/teleroboxer.sav" \
+  "$@"
