@@ -1,0 +1,4 @@
+# Tested vbrecomp framework revision for this project.
+# Upstream: https://github.com/mstan/vbrecomp
+branch = master
+sha = 794a200f4001cb8314955794d2726ae1ea3f5123
