@@ -1,0 +1,20 @@
+# Per-cart configuration for Teleroboxer.
+#
+# This file contains only configuration metadata. It does not contain ROM data.
+
+[program]
+name        = "Teleroboxer"
+rom         = "roms/teleroboxer.vb"
+rom_sha256  = "5bfdc99d6b5bdf32daf3c87e310aa078d6d51c733b02bbbf4042222578b60a36"
+load_base   = "0x07000000"
+entry_pc    = "0xFFFFFFF0"
+
+[runtime]
+window_title = "vbrecomp - Teleroboxer"
+debug_port   = 4390
+oracle_port  = 4391
+frame_hz     = 50.27
+
+[functions]
+# Leave empty unless evidence from analysis proves that manual seeds are required.
+seeds = []
