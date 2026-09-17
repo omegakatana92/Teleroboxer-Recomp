@@ -1,0 +1,63 @@
+# Copyrighted game content
+*.vb
+*.rom
+*.bin
+*.cue
+*.iso
+roms/
+
+# Generated / ROM-derived output
+generated/
+
+# Build and binary outputs
+build/
+build-*/
+out/
+release-stage/
+*.exe
+*.dll
+*.o
+*.obj
+*.a
+*.lib
+*.pdb
+*.exp
+*.zip
+
+# CMake / generated build-system files
+CMakeLists.txt
+*.cmake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# Runtime / debug / capture artifacts
+captures/
+*.bmp
+*.png
+*.log
+*.jsonl
+vb_last_run_report.json
+vb_freeze_dump_*.json
+vb_freeze_heartbeat_*.json
+starvation_dump.jsonl
+
+# External framework/runtime working trees
+vbrecomp/
+recomp-ui/
+beetle-vb/
+
+# Reverse-engineering workspaces
+*.gpr
+ghidra/
+
+# Editor / OS
+__pycache__/
+.pytest_cache/
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
